@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecommerce-be
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ecommerce-be
+  template:
+    metadata:
+      labels:
+        app: ecommerce-be
+    spec:
+      containers:
+      - name: be
+        image: ecommerce-be  # Chỉ để tên, Kustomize sẽ thay thế qua overlays
+        ports:
+        - containerPort: 80
+        env:
+            - name: ASPNETCORE_ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: ecommerce-config
+                  key: ASPNETCORE_ENVIRONMENT
+            # Quan trọng: K8s ghép chuỗi kết nối động
+            - name: ConnectionStrings__DefaultConnection
+              value: "Server=sqlserver-service;Database=ECommerceBadmintonDB;User Id=SA;Password=!65L8XQSakVq*q;TrustServerCertificate=true"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecommerce-be-service
+spec:
+  selector:
+    app: ecommerce-be
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: ClusterIP # Mặc định luôn là ClusterIP cho an toàn

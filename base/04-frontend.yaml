@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecommerce-fe
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ecommerce-fe
+  template:
+    metadata:
+      labels:
+        app: ecommerce-fe
+    spec:
+      containers:
+      - name: fe
+        image: ecommerce-fe # Tên image gốc
+        ports:
+        - containerPort: 3000
+        env:
+            - name: NEXT_PUBLIC_API_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: ecommerce-config
+                  key: NEXT_PUBLIC_API_BASE_URL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecommerce-fe-service
+spec:
+  selector:
+    app: ecommerce-fe
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: ClusterIP # Base cứ để ClusterIP, Overlays sẽ "đè" thành NodePort hoặc LoadBalancer

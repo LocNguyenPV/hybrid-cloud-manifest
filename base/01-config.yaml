@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ecommerce-secrets
+  namespace: ecommerce
+type: Opaque
+stringData:
+  # Password SQL Server (K8s tự mã hóa Base64)
+  sa-password: "!65L8XQSakVq*q"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ecommerce-config
+  namespace: ecommerce
+data:
+  # Cấu hình URL
+  ASPNETCORE_ENVIRONMENT: "Development"
+  # URL này là địa chỉ Ingress của BE mà trình duyệt sẽ gọi
+  NEXT_PUBLIC_API_BASE_URL: "http://35.209.46.191:30002/api/v1"

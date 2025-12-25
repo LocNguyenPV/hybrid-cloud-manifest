@@ -1,0 +1,34 @@
+resources:
+- ../../base
+
+# 1. Tự động đổi Image trỏ về Harbor của bạn
+images:
+- name: ecommerce-be
+  newName: registry.codebyluke.io.vn/ecommerce-badminton/ecommerce-be
+  newTag: latest
+- name: ecommerce-fe
+  newName: registry.codebyluke.io.vn/ecommerce-badminton/ecommerce-fe
+  newTag: latest
+
+# 2. Patch: Đổi Service sang NodePort để truy cập từ IP của máy chủ Lab
+patches:
+- target:
+    kind: Service
+    name: ecommerce-fe-service
+  patch: |-
+    - op: replace
+      path: /spec/type
+      value: NodePort
+    - op: add
+      path: /spec/ports/0/nodePort
+      value: 30001  # Cố định cổng để dễ truy cập
+- target:
+    kind: Service
+    name: ecommerce-be-service
+  patch: |-
+    - op: replace
+      path: /spec/type
+      value: NodePort
+    - op: add
+      path: /spec/ports/0/nodePort
+      value: 30002  # Cố định cổng để dễ truy cập
