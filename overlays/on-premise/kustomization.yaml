@@ -5,30 +5,32 @@ resources:
 images:
 - name: ecommerce-be
   newName: registry.codebyluke.io.vn/ecommerce-badminton/ecommerce-be
-  newTag: latest
+  newTag: "7"
 - name: ecommerce-fe
   newName: registry.codebyluke.io.vn/ecommerce-badminton/ecommerce-fe
-  newTag: latest
+  newTag: "7"
 
 # 2. Patch: Đổi Service sang NodePort để truy cập từ IP của máy chủ Lab
 patches:
-- target:
-    kind: Service
-    name: ecommerce-fe-service
-  patch: |-
+- patch: |-
     - op: replace
       path: /spec/type
       value: NodePort
     - op: add
       path: /spec/ports/0/nodePort
       value: 30001  # Cố định cổng để dễ truy cập
-- target:
+  target:
     kind: Service
-    name: ecommerce-be-service
-  patch: |-
+    name: ecommerce-fe-service
+- patch: |-
     - op: replace
       path: /spec/type
       value: NodePort
     - op: add
       path: /spec/ports/0/nodePort
       value: 30002  # Cố định cổng để dễ truy cập
+  target:
+    kind: Service
+    name: ecommerce-be-service
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
