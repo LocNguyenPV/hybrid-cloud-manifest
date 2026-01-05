@@ -19,16 +19,16 @@ spec:
         app: uptime-kuma
     spec:
       containers:
-        - name: uptime-kuma
-          image: louislam/uptime-kuma:2
-          ports:
-            - containerPort: 3001
-          volumeMounts:
+      - name: uptime-kuma
+        image: louislam/uptime-kuma:2
+        ports:
+        - containerPort: 3001
+        volumeMounts:
         - name: storage
           mountPath: /app/data
       volumes:
-        - name: storage
-          emptyDir: {}
+      - name: storage
+        emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
