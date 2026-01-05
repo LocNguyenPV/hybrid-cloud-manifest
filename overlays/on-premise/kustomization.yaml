@@ -5,10 +5,10 @@ resources:
 images:
 - name: ecommerce-be
   newName: registry.codebyluke.io.vn/ecommerce-badminton/ecommerce-be
-  newTag: "7"
+  newTag: "8"
 - name: ecommerce-fe
   newName: registry.codebyluke.io.vn/ecommerce-badminton/ecommerce-fe
-  newTag: "7"
+  newTag: "8"
 
 # 2. Patch: Đổi Service sang NodePort để truy cập từ IP của máy chủ Lab
 patches:
