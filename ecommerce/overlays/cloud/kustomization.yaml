@@ -5,10 +5,10 @@ resources:
 images:
   - name: ecommerce-be
     newName: asia-southeast1-docker.pkg.dev/devops-476202/ecommerce-repo/ecommerce-be
-    newTag: "8"
+    newTag: latest
   - name: ecommerce-fe
     newName: asia-southeast1-docker.pkg.dev/devops-476202/ecommerce-repo/ecommerce-fe
-    newTag: "8"
+    newTag: latest
 
 # 2. Patch: Đổi Service từ ClusterIP sang LoadBalancer
 patches:
