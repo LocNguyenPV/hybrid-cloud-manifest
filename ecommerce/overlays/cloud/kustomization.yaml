@@ -1,29 +1,28 @@
 resources:
-- ../../base
+  - ../../base
 
 # 1. Tự động đổi Image sang Artifact Registry (Jenkins sẽ sửa dòng này)
 images:
-- name: ecommerce-be
-  newName: asia-southeast1-docker.pkg.dev/devops-476202/ecommerce-repo/ecommerce-be
-  newTag: latest
-- name: ecommerce-fe
-  newName: asia-southeast1-docker.pkg.dev/devops-476202/ecommerce-repo/ecommerce-fe
-  newTag: latest
+  - name: ecommerce-be
+    newName: asia-southeast1-docker.pkg.dev/devops-476202/ecommerce-repo/ecommerce-be
+    newTag: "8"
+  - name: ecommerce-fe
+    newName: asia-southeast1-docker.pkg.dev/devops-476202/ecommerce-repo/ecommerce-fe
+    newTag: "8"
 
 # 2. Patch: Đổi Service từ ClusterIP sang LoadBalancer
 patches:
-- target:
-    kind: Service
-    name: ecommerce-fe-service
-  patch: |-
-    - op: replace
-      path: /spec/type
-      value: LoadBalancer
-- target:
-    kind: Service
-    name: ecommerce-be-service
-  patch: |-
-    - op: replace
-      path: /spec/type
-      value: LoadBalancer
-
+  - target:
+      kind: Service
+      name: ecommerce-fe-service
+    patch: |-
+      - op: replace
+        path: /spec/type
+        value: LoadBalancer
+  - target:
+      kind: Service
+      name: ecommerce-be-service
+    patch: |-
+      - op: replace
+        path: /spec/type
+        value: LoadBalancer
