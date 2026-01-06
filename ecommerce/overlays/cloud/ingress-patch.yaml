@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ecommerce-ingress
+  annotations:
+    # Chỉ định sử dụng Google Cloud Load Balancer (GCE)
+    kubernetes.io/ingress.class: "gce"
+    # Tùy chọn: Tự động chuyển hướng HTTP sang HTTPS nếu có SSL
+    kubernetes.io/ingress.allow-http: "true"
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ecommerce-fe-service # Tên service frontend
+                port:
+                  number: 80
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: ecommerce-be-service # Tên service backend
+                port:
+                  number: 80

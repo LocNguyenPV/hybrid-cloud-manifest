@@ -1,30 +1,40 @@
 resources:
-- ../../base
+  - ../../base
+
+# Thêm file Ingress vào đây
+patchesStrategicMerge:
+  - ingress-patch.yaml
 
 # 1. Tự động đổi Image sang Artifact Registry (Jenkins sẽ sửa dòng này)
 images:
-- name: ecommerce-be
-  newName: asia-southeast1-docker.pkg.dev/devops-476202/ecommerce-repo/ecommerce-be
-  newTag: "11"
-- name: ecommerce-fe
-  newName: asia-southeast1-docker.pkg.dev/devops-476202/ecommerce-repo/ecommerce-fe
-  newTag: "11"
+  - name: ecommerce-be
+    newName: asia-southeast1-docker.pkg.dev/devops-476202/ecommerce-repo/ecommerce-be
+    newTag: "11"
+  - name: ecommerce-fe
+    newName: asia-southeast1-docker.pkg.dev/devops-476202/ecommerce-repo/ecommerce-fe
+    newTag: "11"
 
 # 2. Patch: Đổi Service từ ClusterIP sang LoadBalancer
 patches:
-- patch: |-
-    - op: replace
-      path: /spec/type
-      value: LoadBalancer
-  target:
-    kind: Service
-    name: ecommerce-fe-service
-- patch: |-
-    - op: replace
-      path: /spec/type
-      value: LoadBalancer
-  target:
-    kind: Service
-    name: ecommerce-be-service
+  - patch: |-
+      - op: replace
+        path: /spec/type
+        value: NodePort
+      - op: add
+        path: /spec/ports/0/nodePort
+        value: 30001
+    target:
+      kind: Service
+      name: ecommerce-fe-service
+  - patch: |-
+      - op: replace
+        path: /spec/type
+        value: NodePort
+      - op: add
+        path: /spec/ports/0/nodePort
+        value: 30002
+    target:
+      kind: Service
+      name: ecommerce-be-service
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
