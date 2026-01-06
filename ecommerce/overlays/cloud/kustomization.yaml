@@ -1,8 +1,5 @@
 resources:
   - ../../base
-
-# Thêm file Ingress vào đây
-patchesStrategicMerge:
   - ingress-patch.yaml
 
 # 1. Tự động đổi Image sang Artifact Registry (Jenkins sẽ sửa dòng này)
