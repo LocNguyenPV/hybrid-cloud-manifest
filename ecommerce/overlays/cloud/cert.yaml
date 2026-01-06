@@ -1,0 +1,8 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: domain-certificate
+  namespace: ecommerce
+spec:
+  domains:
+    - ecommerce.codebyluke.io.vn
