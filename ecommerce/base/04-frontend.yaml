@@ -17,6 +17,15 @@ spec:
           image: ecommerce-fe # Tên image gốc
           ports:
             - containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: / # Đường dẫn mặc định để check
+              port: 3000
+            initialDelaySeconds: 15 # Đợi 15s để App NextJS/React khởi động xong
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
           env:
             - name: NEXT_PUBLIC_API_BASE_URL
               valueFrom:
