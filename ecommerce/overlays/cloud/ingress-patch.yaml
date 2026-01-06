@@ -7,6 +7,7 @@ metadata:
     kubernetes.io/ingress.class: "gce"
     # Tùy chọn: Tự động chuyển hướng HTTP sang HTTPS nếu có SSL
     kubernetes.io/ingress.allow-http: "true"
+    networking.gke.io/managed-certificates: "domain-certificate"
 spec:
   rules:
     - http:
