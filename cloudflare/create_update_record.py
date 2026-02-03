@@ -20,8 +20,6 @@ SUBDOMAINS = [
     "registry"
 ]
 
-# Bật đám mây cam (Proxy)? True = Bật, False = Tắt
-PROXIED = True
 
 BASE_URL = "https://api.cloudflare.com/client/v4"
 HEADERS = {
@@ -36,6 +34,11 @@ HEADERS = {
 def manage_dns_record(subdomain):
     # Xử lý tên đầy đủ
     full_record_name = f"{subdomain}.{DOMAIN}"
+
+    # Bật đám mây cam (Proxy)? True = Bật, False = Tắt
+    proxied = subdomain != 'gitlab'  # Chỉ proxy các subdomain khác gitlab
+
+
 
     print(f"--------------------------------------------------")
     print(f"📡 Đang xử lý: {full_record_name}")
@@ -63,7 +66,7 @@ def manage_dns_record(subdomain):
         "name": full_record_name,
         "content": EXTERNAL_IP,
         "ttl": 1,  # 1 = Automatic
-        "proxied": PROXIED
+        "proxied": proxied
     }
 
     if not results:
