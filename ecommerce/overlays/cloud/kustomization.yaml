@@ -17,20 +17,14 @@ patches:
   - patch: |-
       - op: replace
         path: /spec/type
-        value: NodePort
-      - op: add
-        path: /spec/ports/0/nodePort
-        value: 30001
+        value: LoadBalancer
     target:
       kind: Service
       name: ecommerce-fe-service
   - patch: |-
       - op: replace
         path: /spec/type
-        value: NodePort
-      - op: add
-        path: /spec/ports/0/nodePort
-        value: 30002
+        value: LoadBalancer
     target:
       kind: Service
       name: ecommerce-be-service
