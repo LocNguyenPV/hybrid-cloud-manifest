@@ -1,45 +1,45 @@
 resources:
-- ../../base
-- cert.yaml
-- ingress-patch.yaml
+  - ../../base
+  - cert.yaml
+  - ingress-patch.yaml
 
 # 1. Tự động đổi Image sang Artifact Registry (Jenkins sẽ sửa dòng này)
 images:
-- name: ecommerce-be
-  newName: asia-southeast1-docker.pkg.dev/devops-485312/ecommerce-repo/ecommerce-be
-  newTag: "9"
-- name: ecommerce-fe
-  newName: asia-southeast1-docker.pkg.dev/devops-485312/ecommerce-repo/ecommerce-fe
-  newTag: "9"
+  - name: ecommerce-be
+    newName: asia-southeast1-docker.pkg.dev/devops-485312/ecommerce-repo/ecommerce-be
+    newTag: "9"
+  - name: ecommerce-fe
+    newName: asia-southeast1-docker.pkg.dev/devops-485312/ecommerce-repo/ecommerce-fe
+    newTag: "9"
 
 # 2. Patch: Đổi Service từ ClusterIP sang LoadBalancer
 patches:
-- patch: |-
-    - op: replace
-      path: /spec/type
-      value: NodePort
-    - op: add
-      path: /spec/ports/0/nodePort
-      value: 30001
-  target:
-    kind: Service
-    name: ecommerce-fe-service
-- patch: |-
-    - op: replace
-      path: /spec/type
-      value: NodePort
-    - op: add
-      path: /spec/ports/0/nodePort
-      value: 30002
-  target:
-    kind: Service
-    name: ecommerce-be-service
-- patch: |-
-    - op: replace
-      path: /spec/replicas
-      value: 0
-  target:
-    kind: Deployment
-    name: ecommerce-fe
+  - patch: |-
+      - op: replace
+        path: /spec/type
+        value: NodePort
+      - op: add
+        path: /spec/ports/0/nodePort
+        value: 30001
+    target:
+      kind: Service
+      name: ecommerce-fe-service
+  - patch: |-
+      - op: replace
+        path: /spec/type
+        value: NodePort
+      - op: add
+        path: /spec/ports/0/nodePort
+        value: 30002
+    target:
+      kind: Service
+      name: ecommerce-be-service
+  - patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 2
+    target:
+      kind: Deployment
+      name: ecommerce-fe
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
